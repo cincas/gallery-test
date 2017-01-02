@@ -11,7 +11,7 @@ import Foundation
 struct Item {
     let id: String
     let title: String
-    let imagrURL: URL
+    let imageURL: URL
 }
 
 struct Section {
@@ -34,12 +34,12 @@ struct DataSource {
 }
 
 fileprivate func generatedSections() -> [Section] {
-    let sectionTitles = ["Channels", "Continue Watching", "Because you liked xyz"]
+    let sectionTitles = ["Channels", "Continue Watching", "Because you liked xyz", "Tomorrow", "Next week"]
     let sections = sectionTitles.flatMap { title -> Section? in
         let numberOfItems = title.characters.count
         var items = [Item]()
         for itemIndex in 0..<numberOfItems {
-            let item = Item(id: "\(title)-\(itemIndex)", title: "\(title)-\(itemIndex)", imagrURL: URL(string: "http://colourlovers.com.s3.amazonaws.com/images/patterns/4168/4168426.png")!)
+            let item = Item(id: "\(title)-\(itemIndex)", title: "\(title)-\(itemIndex)", imageURL: URL(string: "http://colourlovers.com.s3.amazonaws.com/images/patterns/4168/4168426.png")!)
             items.append(item)
         }
         let sectionType: Section.SectionType = numberOfItems % 2 == 0 ? .normal : .large

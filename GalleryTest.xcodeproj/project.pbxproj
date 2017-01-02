@@ -19,6 +19,7 @@
 		1E1ECCAC1E19D533002C086C /* ListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E1ECCAB1E19D533002C086C /* ListTableViewCell.swift */; };
 		1E1ECCAE1E19DAB5002C086C /* ItemCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E1ECCAD1E19DAB5002C086C /* ItemCollectionViewCell.swift */; };
 		1E1ECCB01E1A0DEE002C086C /* GalleryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E1ECCAF1E1A0DEE002C086C /* GalleryViewModel.swift */; };
+		1E1ECCB21E1A233E002C086C /* TYLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E1ECCB11E1A233E002C086C /* TYLabel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,6 +49,7 @@
 		1E1ECCAB1E19D533002C086C /* ListTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListTableViewCell.swift; sourceTree = "<group>"; };
 		1E1ECCAD1E19DAB5002C086C /* ItemCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemCollectionViewCell.swift; sourceTree = "<group>"; };
 		1E1ECCAF1E1A0DEE002C086C /* GalleryViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GalleryViewModel.swift; sourceTree = "<group>"; };
+		1E1ECCB11E1A233E002C086C /* TYLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TYLabel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,6 +103,7 @@
 				1E1ECCAB1E19D533002C086C /* ListTableViewCell.swift */,
 				1E1ECCAD1E19DAB5002C086C /* ItemCollectionViewCell.swift */,
 				1E1ECCAF1E1A0DEE002C086C /* GalleryViewModel.swift */,
+				1E1ECCB11E1A233E002C086C /* TYLabel.swift */,
 			);
 			path = GalleryTest;
 			sourceTree = "<group>";
@@ -221,6 +224,7 @@
 				1E1ECCAC1E19D533002C086C /* ListTableViewCell.swift in Sources */,
 				1E1ECC861E18E028002C086C /* ViewController.swift in Sources */,
 				1E1ECCAA1E18E9E7002C086C /* UIView+AutoLayout.swift in Sources */,
+				1E1ECCB21E1A233E002C086C /* TYLabel.swift in Sources */,
 				1E1ECCA41E18E056002C086C /* ImageDownloader.swift in Sources */,
 				1E1ECC841E18E028002C086C /* AppDelegate.swift in Sources */,
 				1E1ECCAE1E19DAB5002C086C /* ItemCollectionViewCell.swift in Sources */,

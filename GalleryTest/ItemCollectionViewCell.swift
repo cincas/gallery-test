@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 class ItemCollectionViewCell: UICollectionViewCell {
-    let titleLabel = UILabel()
+    let titleLabel = TYLabel()
     let thumbnailView = UIImageView()
     let containerView = UIView()
     override init(frame: CGRect) {
@@ -20,16 +20,18 @@ class ItemCollectionViewCell: UICollectionViewCell {
         containerView.addSubview(thumbnailView)
         contentView.addSubview(containerView)
         containerView.pinTo(view: contentView, onEdges: [.left, .right, .top, .bottom])
-        contentView.backgroundColor = .yellow
+        contentView.backgroundColor = .black
         thumbnailView.pinTo(view: containerView, onEdges: [.left, .top, .right])
         
         titleLabel.pinTo(view: containerView, onEdges: [.left, .right, .bottom])
         titleLabel.pin(edge: .top, toView: thumbnailView, onEdge: .bottom)
 
         thumbnailView.backgroundColor = .gray
-        titleLabel.text = "This is a title.............. . . .. .. . .. . .. . .. ."
+        thumbnailView.contentMode = .scaleAspectFill
+        thumbnailView.clipsToBounds = true
         titleLabel.numberOfLines = 0
         titleLabel.lineBreakMode = .byWordWrapping
+        titleLabel.textColor = .white
 
         let thumbnailRatioConstraint = NSLayoutConstraint(item: thumbnailView, attribute: .height, relatedBy: .equal, toItem: thumbnailView, attribute: .width, multiplier: 9.0 / 16.0, constant: 0)
         thumbnailView.addConstraint(thumbnailRatioConstraint)
@@ -46,7 +48,11 @@ class ItemCollectionViewCell: UICollectionViewCell {
 
     var item: Item? {
         didSet {
-            titleLabel.text = item?.title
+            guard let item = item else {
+                return
+            }
+            titleLabel.text = item.title
+            thumbnailView.setImage(with: item.imageURL)
         }
     }
 }
