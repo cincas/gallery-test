@@ -15,10 +15,8 @@ class ListViewController: UITableViewController {
         super.viewDidLoad()
         title = "List"
         tableView.backgroundColor = .white
+        tableView.separatorStyle = .none
         tableView.register(ListTableViewCell.self, forCellReuseIdentifier: cellIdentifier)
-
-        // TODO: as for time constraint, height for collection views are hard coded here
-        tableView.rowHeight = 250.0
     }
 }
 
@@ -40,6 +38,24 @@ extension ListViewController {
         cell.section = viewModel.section(atIndex: indexPath.section)
         cell.collectionViewCellDelegate = self
         return cell
+    }
+
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        // TODO: as for time constraint, height for collection views are hard coded here
+        let section = viewModel.section(atIndex: indexPath.section)
+        return section.type == .normal ? 150 : 250
+    }
+
+    override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        guard let headerView = view as? UITableViewHeaderFooterView else { return }
+        headerView.textLabel?.font = UIFont.boldSystemFont(ofSize: 20.0)
+        headerView.textLabel?.textColor = .white
+        headerView.textLabel?.backgroundColor = .black
+        headerView.backgroundView?.backgroundColor = .black
+    }
+
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 45.0
     }
 }
 

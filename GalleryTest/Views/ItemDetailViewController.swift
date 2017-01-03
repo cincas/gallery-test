@@ -26,10 +26,10 @@ class ItemDetailViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = .black
 
         dismissButton.setTitle("Dismiss", for: .normal)
-        dismissButton.setTitleColor(.black, for: .normal)
+        dismissButton.setTitleColor(.white, for: .normal)
         dismissButton.addTarget(self, action: #selector(close), for: .touchUpInside)
 
         view.addSubview(dismissButton)
