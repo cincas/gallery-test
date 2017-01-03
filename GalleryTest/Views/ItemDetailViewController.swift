@@ -9,15 +9,24 @@
 import UIKit
 
 class ItemDetailViewController: UIViewController {
-    let dismissButton = UIButton()
-    let imageView = UIImageView()
+    fileprivate let dismissButton = UIButton()
+    fileprivate let imageView = UIImageView()
+    fileprivate let titleLabel = UILabel()
+
     fileprivate let item: Item
+
     init(item: Item, image: UIImage?) {
         self.item = item
         imageView.image = image
         imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
+
+        titleLabel.numberOfLines = 0
+        titleLabel.textAlignment = .center
+        titleLabel.textColor = .white
         super.init(nibName: nil, bundle: nil)
-        title = item.title
+        title = item.id
+        titleLabel.text = item.title
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -38,20 +47,29 @@ class ItemDetailViewController: UIViewController {
         view.addSubview(imageView)
         imageView.pinTo(view: view, onEdges: [.left, .right])
 
-        let topConstraint = imageView.topAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor, constant: 0)
-        view.addConstraint(topConstraint)
+        view.addConstraint(
+            imageView.topAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor, constant: 0)
+        )
 
-        let imageViewRatioConstraint = imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor, multiplier: 9.0 / 16.0)
-        
-        imageView.addConstraint(imageViewRatioConstraint)
-        imageView.clipsToBounds = true
+        imageView.addConstraint(
+            imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor, multiplier: 9.0 / 16.0)
+        )
+
+        view.addSubview(titleLabel)
+        view.addConstraints([
+            titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            titleLabel.widthAnchor.constraint(lessThanOrEqualTo: view.widthAnchor),
+            titleLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 20)
+            ])
+
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
     }
 
     func close() {
-        if isBeingPresented {
-            dismiss(animated: true, completion: nil)
-        } else if navigationController != nil {
+        if navigationController != nil {
             _ = navigationController?.popViewController(animated: true)
+        } else {
+            dismiss(animated: true, completion: nil)
         }
     }
 }

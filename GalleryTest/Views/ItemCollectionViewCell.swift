@@ -43,9 +43,9 @@ class ItemCollectionViewCell: UICollectionViewCell {
         titleLabel.lineBreakMode = .byWordWrapping
         titleLabel.textColor = .white
 
-        contentView.addConstraint(
-            titleLabel.bottomAnchor.constraint(lessThanOrEqualTo: contentView.bottomAnchor)
-        )
+        let titleLabelConstraint = titleLabel.bottomAnchor.constraint(lessThanOrEqualTo: containerView.bottomAnchor)
+        titleLabelConstraint.priority = UILayoutPriorityDefaultHigh
+        contentView.addConstraint(titleLabelConstraint)
 
         contentView.autoresizingMask = [.flexibleHeight]
     }

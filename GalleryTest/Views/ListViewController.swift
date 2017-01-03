@@ -53,7 +53,16 @@ extension ListViewController {
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         // TODO: as for time constraint, height for collection views are hard coded here
         let section = viewModel.section(atIndex: indexPath.section)
-        return section.type == .normal ? 150 : 250
+        switch (section.type, UIDevice.current.userInterfaceIdiom) {
+        case (.normal, .phone):
+            return 100
+        case (.normal, _):
+            return 150
+        case (.large, .phone):
+            return 150
+        case (.large, _):
+            return 250
+        }
     }
 
     override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
@@ -75,10 +84,18 @@ extension ListViewController: ItemCollectionViewCellDelegate {
         let detailViewController = ItemDetailViewController(item: item, image: cell.thumbnailView.image)
         let startFrame = cell.thumbnailView.convert(cell.thumbnailView.frame, to: UIScreen.main.coordinateSpace)
 
-        let fadeTransitionDelegate = NavigationTransitionDelegate(sourceView: cell.thumbnailView, destination: detailViewController, startFrame: startFrame)
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            let fadeTransitionDelegate = NavigationTransitionDelegate(sourceView: cell.thumbnailView, destination: detailViewController, startFrame: startFrame)
 
-        navigationController?.delegate = fadeTransitionDelegate
-        navigationController?.pushViewController(detailViewController, animated: true)
+            navigationController?.delegate = fadeTransitionDelegate
+            navigationController?.pushViewController(detailViewController, animated: true)
+        } else {
+            let fadeTransitionDelegate = NavigationTransitionDelegate(sourceView: cell.thumbnailView, destination: detailViewController, startFrame: startFrame)
+            detailViewController.transitioningDelegate = fadeTransitionDelegate
+            detailViewController.modalPresentationStyle = .custom
+            present(detailViewController, animated: true, completion: nil)
+        }
+
     }
 }
 
