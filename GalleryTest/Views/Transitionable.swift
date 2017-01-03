@@ -8,6 +8,12 @@
 
 import UIKit
 
+protocol TransitionDestinationLike {
+    var transitionableFrame: CGRect { get }
+    func transitionWillBegin()
+    func transitionDidEnd()
+}
+
 class TransitionDelegate: NSObject {
     var startFrame: CGRect
     var sourceView: UIView
@@ -25,8 +31,14 @@ extension TransitionDelegate: UIViewControllerTransitioningDelegate {
     }
 }
 
-protocol TransitionDestinationLike {
-    var transitionableFrame: CGRect { get }
-    func transitionWillBegin()
-    func transitionDidEnd()
+class NavigationTransitionDelegate: TransitionDelegate {}
+
+extension NavigationTransitionDelegate: UINavigationControllerDelegate {
+    func navigationController(_ navigationController: UINavigationController, animationControllerFor operation: UINavigationControllerOperation, from fromVC: UIViewController, to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        guard let _ = toVC as? TransitionDestinationLike else {
+            return nil
+        }
+
+        return PresentationAnimator(sourceView: sourceView, destination: destination, startFrame: startFrame)
+    }
 }

@@ -13,11 +13,9 @@ class ListViewController: UITableViewController {
     fileprivate var viewModel = GalleryViewModel()
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-        tableView.backgroundColor = .blue
+        title = "List"
+        tableView.backgroundColor = .white
         tableView.register(ListTableViewCell.self, forCellReuseIdentifier: cellIdentifier)
-        tableView.delegate = self
-        tableView.dataSource = self
 
         // TODO: as for time constraint, height for collection views are hard coded here
         tableView.rowHeight = 250.0
@@ -50,11 +48,10 @@ extension ListViewController: ItemCollectionViewCellDelegate {
         let detailViewController = ItemDetailViewController(item: item, image: cell.thumbnailView.image)
         let startFrame = cell.thumbnailView.convert(cell.thumbnailView.frame, to: view)
 
-        let fadeTransitionDelegate = TransitionDelegate(sourceView: cell.thumbnailView, destination: detailViewController, startFrame: startFrame)
+        let fadeTransitionDelegate = NavigationTransitionDelegate(sourceView: cell.thumbnailView, destination: detailViewController, startFrame: startFrame)
 
-        detailViewController.transitioningDelegate = fadeTransitionDelegate
-        detailViewController.modalPresentationStyle = .custom
-
-        present(detailViewController, animated: true, completion: nil)
+        navigationController?.delegate = fadeTransitionDelegate
+        navigationController?.pushViewController(detailViewController, animated: true)
     }
 }
+

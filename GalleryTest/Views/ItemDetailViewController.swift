@@ -17,6 +17,7 @@ class ItemDetailViewController: UIViewController {
         imageView.image = image
         imageView.contentMode = .scaleAspectFill
         super.init(nibName: nil, bundle: nil)
+        title = item.title
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -25,28 +26,39 @@ class ItemDetailViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .green
+        view.backgroundColor = .white
 
         dismissButton.setTitle("Dismiss", for: .normal)
+        dismissButton.setTitleColor(.black, for: .normal)
         dismissButton.addTarget(self, action: #selector(close), for: .touchUpInside)
 
         view.addSubview(dismissButton)
         dismissButton.pinTo(view: view, onEdges: [.centerX, .bottom])
 
         view.addSubview(imageView)
-        imageView.pinTo(view: view, onEdges: [.left, .right, .top])
-        let imageViewRatioConstraint = NSLayoutConstraint(item: imageView, attribute: .height, relatedBy: .equal, toItem: imageView, attribute: .width, multiplier: 9.0/16.0, constant: 0)
+        imageView.pinTo(view: view, onEdges: [.left, .right])
+
+        let topConstraint = imageView.topAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor, constant: 0)
+        view.addConstraint(topConstraint)
+
+        let imageViewRatioConstraint = imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor, multiplier: 9.0 / 16.0)
+        
         imageView.addConstraint(imageViewRatioConstraint)
         imageView.clipsToBounds = true
     }
 
     func close() {
-        dismiss(animated: true, completion: nil)
+        if isBeingPresented {
+            dismiss(animated: true, completion: nil)
+        } else if navigationController != nil {
+            _ = navigationController?.popViewController(animated: true)
+        }
     }
 }
 
 extension ItemDetailViewController: TransitionDestinationLike {
     func transitionWillBegin() {
+        view.layoutIfNeeded()
         imageView.isHidden = true
     }
 
