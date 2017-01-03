@@ -14,9 +14,13 @@ class ListViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "List"
-        tableView.backgroundColor = .white
+        tableView.backgroundColor = .black
         tableView.separatorStyle = .none
         tableView.register(ListTableViewCell.self, forCellReuseIdentifier: cellIdentifier)
+        edgesForExtendedLayout = [.top]
+    }
+    override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
+        tableView.reloadData()
     }
 }
 
@@ -40,6 +44,12 @@ extension ListViewController {
         return cell
     }
 
+    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        guard let itemCell = cell as? ListTableViewCell else { return }
+        itemCell.collectionView.reloadData()
+        itemCell.collectionView.collectionViewLayout.invalidateLayout()
+    }
+
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         // TODO: as for time constraint, height for collection views are hard coded here
         let section = viewModel.section(atIndex: indexPath.section)
@@ -51,6 +61,7 @@ extension ListViewController {
         headerView.textLabel?.font = UIFont.boldSystemFont(ofSize: 20.0)
         headerView.textLabel?.textColor = .white
         headerView.textLabel?.backgroundColor = .black
+        headerView.textLabel?.textAlignment = .left
         headerView.backgroundView?.backgroundColor = .black
     }
 
@@ -62,7 +73,7 @@ extension ListViewController {
 extension ListViewController: ItemCollectionViewCellDelegate {
     func present(_ cell: ItemCollectionViewCell, fromRect rect: CGRect, withItem item: Item) {
         let detailViewController = ItemDetailViewController(item: item, image: cell.thumbnailView.image)
-        let startFrame = cell.thumbnailView.convert(cell.thumbnailView.frame, to: view)
+        let startFrame = cell.thumbnailView.convert(cell.thumbnailView.frame, to: UIScreen.main.coordinateSpace)
 
         let fadeTransitionDelegate = NavigationTransitionDelegate(sourceView: cell.thumbnailView, destination: detailViewController, startFrame: startFrame)
 

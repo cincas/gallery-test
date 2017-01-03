@@ -34,7 +34,7 @@ struct DataSource {
 }
 
 fileprivate func generatedSections() -> [Section] {
-    let sectionTitles = ["Channels", "Continue Watching", "Because you liked xyz", "Tomorrow", "Next week"]
+    let sectionTitles = ["Channels", "Continue Watching", "Because you liked xyz", "Tomorrow", "Next", "Next 1", "Next 2"]
     let sections = sectionTitles.flatMap { title -> Section? in
         let numberOfItems = title.characters.count
         var items = [Item]()

@@ -34,7 +34,6 @@ class ImageDownloader {
         let downloadTask = ImageDownloadTask(url: url)
         let cachedImage = cachePool.loadImage(withCacheKey: downloadTask.cacheKey)
         guard cachedImage == nil else {
-            debugPrint("Found cached image \(url)")
             completionHandler(.success(cachedImage!))
             return
         }

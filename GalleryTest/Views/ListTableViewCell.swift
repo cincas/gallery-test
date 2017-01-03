@@ -11,14 +11,8 @@ import UIKit
 
 private let itemCellIdentifier = "listItemCell"
 class ListTableViewCell: UITableViewCell {
-    private let collectionView: UICollectionView
-    var section: Section? {
-        didSet {
-            if oldValue?.title != section?.title {
-                collectionView.reloadData()
-            }
-        }
-    }
+    let collectionView: UICollectionView
+    var section: Section?
 
     weak var collectionViewCellDelegate: ItemCollectionViewCellDelegate?
 
@@ -35,8 +29,9 @@ class ListTableViewCell: UITableViewCell {
         collectionView.register(ItemCollectionViewCell.self, forCellWithReuseIdentifier: itemCellIdentifier)
         contentView.addSubview(collectionView)
         collectionView.pinTo(view: contentView, onEdges: [.left, .right, .bottom, .top])
+        collectionView.layer.borderColor = UIColor.red.cgColor
+        collectionView.layer.borderWidth = 1.0
         contentView.autoresizingMask = [.flexibleHeight]
-        contentView.translatesAutoresizingMaskIntoConstraints = true
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -86,8 +81,7 @@ extension ListTableViewCell: UICollectionViewDelegateFlowLayout {
         guard let item = section?.items[indexPath.item],
             let cell = collectionView.cellForItem(at: indexPath) as? ItemCollectionViewCell else { return }
         let cellFrame = cell.frame
-        let rect = cell.convert(cellFrame, to: UIScreen.main.coordinateSpace)
-        collectionViewCellDelegate?.present(cell, fromRect: rect, withItem: item)
+        collectionViewCellDelegate?.present(cell, fromRect: cellFrame, withItem: item)
     }
 }
 

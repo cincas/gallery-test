@@ -10,6 +10,16 @@ import Foundation
 import UIKit
 
 class ItemCollectionViewCell: UICollectionViewCell {
+    var item: Item? {
+        didSet {
+            guard let item = item else {
+                return
+            }
+            titleLabel.text = item.title
+            thumbnailView.setImage(with: item.imageURL)
+        }
+    }
+
     let titleLabel = TYLabel()
     let thumbnailView = UIImageView()
     let containerView = UIView()
@@ -23,7 +33,7 @@ class ItemCollectionViewCell: UICollectionViewCell {
         contentView.backgroundColor = .black
         thumbnailView.pinTo(view: containerView, onEdges: [.left, .top, .right])
         
-        titleLabel.pinTo(view: containerView, onEdges: [.left, .right, .bottom])
+        titleLabel.pinTo(view: containerView, onEdges: [.left, .right])
         titleLabel.pin(edge: .top, toView: thumbnailView, onEdge: .bottom)
 
         thumbnailView.backgroundColor = .gray
@@ -33,8 +43,11 @@ class ItemCollectionViewCell: UICollectionViewCell {
         titleLabel.lineBreakMode = .byWordWrapping
         titleLabel.textColor = .white
 
-        let thumbnailRatioConstraint = NSLayoutConstraint(item: thumbnailView, attribute: .height, relatedBy: .equal, toItem: thumbnailView, attribute: .width, multiplier: 9.0 / 16.0, constant: 0)
-        thumbnailView.addConstraint(thumbnailRatioConstraint)
+        contentView.addConstraint(
+            titleLabel.bottomAnchor.constraint(lessThanOrEqualTo: contentView.bottomAnchor)
+        )
+
+        contentView.autoresizingMask = [.flexibleHeight]
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -42,17 +55,13 @@ class ItemCollectionViewCell: UICollectionViewCell {
     }
 
     override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
-        let attributes = layoutAttributes
-        return attributes
+        return layoutAttributes
     }
 
-    var item: Item? {
-        didSet {
-            guard let item = item else {
-                return
-            }
-            titleLabel.text = item.title
-            thumbnailView.setImage(with: item.imageURL)
-        }
+    override func updateConstraints() {
+        super.updateConstraints()
+        let thumbnailRatioConstraint = thumbnailView.heightAnchor.constraint(equalTo: thumbnailView.widthAnchor, multiplier: 9.0 / 16.0)
+
+        thumbnailView.addConstraint(thumbnailRatioConstraint)
     }
 }
