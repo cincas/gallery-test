@@ -10,7 +10,7 @@ import UIKit
 
 private let cellIdentifier = "cell"
 class ListViewController: UITableViewController {
-    fileprivate var viewModel = GalleryViewModel()
+    fileprivate var viewModel = GalleryViewModel(dataSource: DataSource.shared)
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "List"
@@ -26,7 +26,7 @@ class ListViewController: UITableViewController {
 
 extension ListViewController {
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return viewModel.numberOfSections
+        return viewModel.sectionViewModels.count
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -34,12 +34,12 @@ extension ListViewController {
     }
 
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return viewModel.section(atIndex: section).title
+        return viewModel.sectionTitle(atIndex: section)
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> ListTableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! ListTableViewCell
-        cell.section = viewModel.section(atIndex: indexPath.section)
+        cell.sectionViewModel = viewModel.sectionViewModels[indexPath.section]
         cell.collectionViewCellDelegate = self
         return cell
     }
@@ -52,7 +52,7 @@ extension ListViewController {
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         // TODO: as for time constraint, height for collection views are hard coded here
-        let section = viewModel.section(atIndex: indexPath.section)
+        let section = viewModel.sectionViewModels[indexPath.section]
         switch (section.type, UIDevice.current.userInterfaceIdiom) {
         case (.normal, .phone):
             return 100
@@ -80,8 +80,8 @@ extension ListViewController {
 }
 
 extension ListViewController: ItemCollectionViewCellDelegate {
-    func present(_ cell: ItemCollectionViewCell, fromRect rect: CGRect, withItem item: Item) {
-        let detailViewController = ItemDetailViewController(item: item, image: cell.thumbnailView.image)
+    func present(_ cell: ItemCollectionViewCell) {
+        let detailViewController = ItemDetailViewController(itemViewModel: cell.itemViewModel!)
         let startFrame = cell.thumbnailView.convert(cell.thumbnailView.frame, to: UIScreen.main.coordinateSpace)
 
         if UIDevice.current.userInterfaceIdiom == .pad {
@@ -95,7 +95,6 @@ extension ListViewController: ItemCollectionViewCellDelegate {
             detailViewController.modalPresentationStyle = .custom
             present(detailViewController, animated: true, completion: nil)
         }
-
     }
 }
 

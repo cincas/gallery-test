@@ -10,13 +10,16 @@ import Foundation
 import UIKit
 
 class ItemCollectionViewCell: UICollectionViewCell {
-    var item: Item? {
+    var itemViewModel: ItemViewModel? {
         didSet {
-            guard let item = item else {
+            guard let itemViewModel = itemViewModel else {
                 return
             }
-            titleLabel.text = item.title
-            thumbnailView.setImage(with: item.imageURL)
+            titleLabel.text = itemViewModel.title
+
+            thumbnailView.image = nil
+
+            itemViewModel.bind(withImageView: thumbnailView)
         }
     }
 

@@ -11,7 +11,7 @@ import Foundation
 struct Item {
     let id: String
     let title: String
-    let imageURL: URL
+    var imageURL: URL?
 }
 
 struct Section {
@@ -39,7 +39,7 @@ fileprivate func generatedSections() -> [Section] {
         let numberOfItems = title.characters.count
         var items = [Item]()
         for itemIndex in 0..<numberOfItems {
-            let item = Item(id: "\(title)-\(itemIndex)", title: "\(title)-\(itemIndex)", imageURL: URL(string: "http://colourlovers.com.s3.amazonaws.com/images/patterns/4168/4168426.png")!)
+            let item = Item(id: "\(title)-\(itemIndex)", title: "\(title)-\(itemIndex)", imageURL: nil)
             items.append(item)
         }
         let sectionType: Section.SectionType = numberOfItems % 2 == 0 ? .normal : .large

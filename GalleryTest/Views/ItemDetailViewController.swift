@@ -13,11 +13,13 @@ class ItemDetailViewController: UIViewController {
     fileprivate let imageView = UIImageView()
     fileprivate let titleLabel = UILabel()
 
-    fileprivate let item: Item
+    fileprivate let itemViewModel: ItemViewModel
 
-    init(item: Item, image: UIImage?) {
-        self.item = item
-        imageView.image = image
+    init(itemViewModel: ItemViewModel) {
+        self.itemViewModel = itemViewModel
+        if let imageURL = itemViewModel.imageURL {
+            imageView.setImage(fromURL: imageURL)
+        }
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
 
@@ -25,8 +27,8 @@ class ItemDetailViewController: UIViewController {
         titleLabel.textAlignment = .center
         titleLabel.textColor = .white
         super.init(nibName: nil, bundle: nil)
-        title = item.id
-        titleLabel.text = item.title
+        title = itemViewModel.id
+        titleLabel.text = itemViewModel.title
     }
     
     required init?(coder aDecoder: NSCoder) {

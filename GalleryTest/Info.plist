@@ -28,6 +28,14 @@
 		<true/>
 		<key>NSExceptionDomains</key>
 		<dict>
+            <key>www.colourlovers.com</key>
+            <dict>
+                <key>NSExceptionAllowsInsecureHTTPLoads</key>
+                <true/>
+                <key>NSIncludesSubdomains</key>
+                <true/>
+            </dict>
+
 			<key>colourlovers.com.s3.amazonaws.com</key>
 			<dict>
 				<key>NSExceptionAllowsInsecureHTTPLoads</key>

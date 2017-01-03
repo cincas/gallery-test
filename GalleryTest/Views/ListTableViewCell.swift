@@ -12,7 +12,7 @@ import UIKit
 private let itemCellIdentifier = "listItemCell"
 class ListTableViewCell: UITableViewCell {
     let collectionView: UICollectionView
-    var section: Section?
+    var sectionViewModel: SectionViewModel?
 
     weak var collectionViewCellDelegate: ItemCollectionViewCellDelegate?
 
@@ -41,23 +41,23 @@ class ListTableViewCell: UITableViewCell {
 
 extension ListTableViewCell: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.section?.items.count ?? 0
+        return sectionViewModel?.itemViewModels.count ?? 0
     }
 
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return section != nil ? 1 : 0
+        return sectionViewModel != nil ? 1 : 0
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: itemCellIdentifier, for: indexPath) as! ItemCollectionViewCell
-        cell.item = section?.items[indexPath.item]
+        cell.itemViewModel = sectionViewModel?.itemViewModels[indexPath.row]
         return cell
     }
 }
 
 extension ListTableViewCell: UICollectionViewDelegateFlowLayout {
     private var itemsPerScreen: CGFloat {
-        guard let sectionType = section?.type else { return 1 }
+        guard let sectionType = sectionViewModel?.type else { return 1 }
 
         switch (sectionType, UIDevice.current.orientation.isLandscape) {
         case (.normal, false):
@@ -78,13 +78,11 @@ extension ListTableViewCell: UICollectionViewDelegateFlowLayout {
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: false)
-        guard let item = section?.items[indexPath.item],
-            let cell = collectionView.cellForItem(at: indexPath) as? ItemCollectionViewCell else { return }
-        let cellFrame = cell.frame
-        collectionViewCellDelegate?.present(cell, fromRect: cellFrame, withItem: item)
+        guard let cell = collectionView.cellForItem(at: indexPath) as? ItemCollectionViewCell else { return }
+        collectionViewCellDelegate?.present(cell)
     }
 }
 
 protocol ItemCollectionViewCellDelegate: class {
-    func present(_ cell: ItemCollectionViewCell, fromRect rect: CGRect, withItem item: Item)
+    func present(_ cell: ItemCollectionViewCell)
 }

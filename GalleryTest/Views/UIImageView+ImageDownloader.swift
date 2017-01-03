@@ -9,7 +9,7 @@
 import UIKit
 
 extension UIImageView {
-    func setImage(with url: URL) {
+    func setImage(fromURL url: URL) {
         ImageDownloader.shared.downloadImage(with: url) { [weak self] result in
             guard let sself = self else { return }
             switch result {
@@ -19,6 +19,22 @@ extension UIImageView {
                 }
             case .failure(_):
                 debugPrint("failed to download image")
+            }
+        }
+    }
+}
+
+extension UIImageView: ColorLoversClientType {
+    func setRandomImage(fromURL url: URL) {
+        if image == nil {
+            extractImageURL(fromURL: url) { result in
+                switch result {
+                case let .success(imageURL):
+                    self.setImage(fromURL: imageURL)
+                    break
+                case .failure(_):
+                    break
+                }
             }
         }
     }

@@ -8,18 +8,18 @@
 
 import UIKit
 
-enum Result<T, ImageDownloadError> {
+enum Result<T, Error> {
     case success(T)
-    case failure(ImageDownloadError)
+    case failure(Error)
 }
 
-enum ImageDownloadError {
+enum NetworkError: Error {
     case unknown
     case network
     case malformed
 }
 
-typealias ImageDownloadCompletionHandler = (Result<UIImage, ImageDownloadError>) -> Void
+typealias ImageDownloadCompletionHandler = (Result<UIImage, NetworkError>) -> Void
 
 class ImageDownloader {
     static let shared = ImageDownloader(cachePool: ImageCachePool())
