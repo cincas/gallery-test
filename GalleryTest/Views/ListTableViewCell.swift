@@ -20,6 +20,8 @@ class ListTableViewCell: UITableViewCell {
         }
     }
 
+    weak var collectionViewCellDelegate: ItemCollectionViewCellDelegate?
+
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         let collectionViewFlowLayout = UICollectionViewFlowLayout()
         collectionViewFlowLayout.minimumLineSpacing = 10
@@ -59,11 +61,6 @@ extension ListTableViewCell: UICollectionViewDataSource {
 }
 
 extension ListTableViewCell: UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let itemWidth = collectionView.bounds.size.width / itemsPerScreen
-        return CGSize(width: itemWidth, height: collectionView.bounds.size.height)
-    }
-
     private var itemsPerScreen: CGFloat {
         guard let sectionType = section?.type else { return 1 }
 
@@ -78,4 +75,22 @@ extension ListTableViewCell: UICollectionViewDelegateFlowLayout {
             return 3.5
         }
     }
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let itemWidth = collectionView.bounds.size.width / itemsPerScreen
+        return CGSize(width: itemWidth, height: collectionView.bounds.size.height)
+    }
+
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        collectionView.deselectItem(at: indexPath, animated: false)
+        guard let item = section?.items[indexPath.item],
+            let cell = collectionView.cellForItem(at: indexPath) as? ItemCollectionViewCell else { return }
+        let cellFrame = cell.frame
+        let rect = cell.convert(cellFrame, to: UIScreen.main.coordinateSpace)
+        collectionViewCellDelegate?.present(cell, fromRect: rect, withItem: item)
+    }
+}
+
+protocol ItemCollectionViewCellDelegate: class {
+    func present(_ cell: ItemCollectionViewCell, fromRect rect: CGRect, withItem item: Item)
 }

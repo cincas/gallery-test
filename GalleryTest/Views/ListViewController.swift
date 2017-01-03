@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  ListViewController.swift
 //  GalleryTest
 //
 //  Created by Yang, Tyler on 1/1/17.
@@ -9,7 +9,7 @@
 import UIKit
 
 private let cellIdentifier = "cell"
-class ViewController: UITableViewController {
+class ListViewController: UITableViewController {
     fileprivate var viewModel = GalleryViewModel()
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -19,12 +19,12 @@ class ViewController: UITableViewController {
         tableView.delegate = self
         tableView.dataSource = self
 
-        // TODO: as time constraint, height for collection views are hard coded here
+        // TODO: as for time constraint, height for collection views are hard coded here
         tableView.rowHeight = 250.0
     }
 }
 
-extension ViewController {
+extension ListViewController {
     override func numberOfSections(in tableView: UITableView) -> Int {
         return viewModel.numberOfSections
     }
@@ -40,6 +40,21 @@ extension ViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> ListTableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! ListTableViewCell
         cell.section = viewModel.section(atIndex: indexPath.section)
+        cell.collectionViewCellDelegate = self
         return cell
+    }
+}
+
+extension ListViewController: ItemCollectionViewCellDelegate {
+    func present(_ cell: ItemCollectionViewCell, fromRect rect: CGRect, withItem item: Item) {
+        let detailViewController = ItemDetailViewController(item: item, image: cell.thumbnailView.image)
+        let startFrame = cell.thumbnailView.convert(cell.thumbnailView.frame, to: view)
+
+        let fadeTransitionDelegate = TransitionDelegate(sourceView: cell.thumbnailView, destination: detailViewController, startFrame: startFrame)
+
+        detailViewController.transitioningDelegate = fadeTransitionDelegate
+        detailViewController.modalPresentationStyle = .custom
+
+        present(detailViewController, animated: true, completion: nil)
     }
 }
