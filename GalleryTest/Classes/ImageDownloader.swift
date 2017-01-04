@@ -11,6 +11,7 @@ enum NetworkError: Error {
     case unknown
     case network
     case malformed
+    case cancelled
 }
 
 typealias ImageDownloadCompletionHandler = (Result<UIImage, NetworkError>) -> Void
@@ -94,7 +95,11 @@ struct ImageDownloadTask {
     mutating func start(completionHandler: ImageDownloadCompletionHandler? = nil) {
         dataTask = URLSession.shared.dataTask(with: url) { data, response, error in
             guard error == nil else {
-                completionHandler?(.failure(.network))
+                if let error = error as? NSError, error.code == -999 {
+                    completionHandler?(.failure(.cancelled))
+                } else {
+                    completionHandler?(.failure(.network))
+                }
                 return
             }
             if let data = data, let image = UIImage(data: data) {
