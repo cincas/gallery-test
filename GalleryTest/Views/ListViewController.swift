@@ -11,14 +11,17 @@ import UIKit
 private let cellIdentifier = "cell"
 class ListViewController: UITableViewController {
     fileprivate var viewModel = GalleryViewModel(dataSource: DataSource.shared)
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "List"
         tableView.backgroundColor = .black
         tableView.separatorStyle = .none
+        tableView.separatorInset = UIEdgeInsets(top: 0.0, left: 8.0, bottom: 0.0, right: 0.0)
         tableView.register(ListTableViewCell.self, forCellReuseIdentifier: cellIdentifier)
         edgesForExtendedLayout = [.top]
     }
+
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
         tableView.reloadData()
     }

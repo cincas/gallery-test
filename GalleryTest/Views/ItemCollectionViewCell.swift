@@ -31,28 +31,31 @@ class ItemCollectionViewCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
 
+        contentView.autoresizingMask = [.flexibleHeight]
+        contentView.backgroundColor = UIColor(red: 26.0 / 255.0, green: 26.0 / 255.0, blue: 26.0 / 255.0, alpha: 1.0)
+
         containerView.addSubview(titleLabel)
         containerView.addSubview(thumbnailView)
         contentView.addSubview(containerView)
         containerView.pinTo(view: contentView, onEdges: [.left, .right, .top, .bottom])
-        contentView.backgroundColor = .black
-        thumbnailView.pinTo(view: containerView, onEdges: [.left, .top, .right])
-        
-        titleLabel.pinTo(view: containerView, onEdges: [.left, .right])
-        titleLabel.pin(edge: .top, toView: thumbnailView, onEdge: .bottom)
 
         thumbnailView.backgroundColor = .gray
         thumbnailView.contentMode = .scaleAspectFill
         thumbnailView.clipsToBounds = true
+        thumbnailView.pinTo(view: containerView, onEdges: [.left, .top, .right])
+
         titleLabel.numberOfLines = 0
         titleLabel.lineBreakMode = .byWordWrapping
         titleLabel.textColor = .white
+        containerView.addConstraints([
+            titleLabel.leftAnchor.constraint(equalTo: containerView.layoutMarginsGuide.leftAnchor, constant: 0),
+            titleLabel.rightAnchor.constraint(equalTo: containerView.layoutMarginsGuide.rightAnchor, constant: 0)
+            ])
+        titleLabel.pin(edge: .top, toView: thumbnailView, withOffset: 8.0, onEdge: .bottom)
 
         let titleLabelConstraint = titleLabel.bottomAnchor.constraint(lessThanOrEqualTo: containerView.bottomAnchor)
         titleLabelConstraint.priority = UILayoutPriorityDefaultHigh
-        contentView.addConstraint(titleLabelConstraint)
-
-        contentView.autoresizingMask = [.flexibleHeight]
+        containerView.addConstraint(titleLabelConstraint)
     }
     
     required init?(coder aDecoder: NSCoder) {

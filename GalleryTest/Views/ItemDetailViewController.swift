@@ -38,9 +38,8 @@ class ItemDetailViewController: UIViewController {
         view.addSubview(dismissButton)
         dismissButton.pinTo(view: view, onEdges: [.centerX, .bottom])
 
-        if let imageURL = itemViewModel.imageURL {
-            imageView.setImage(fromURL: imageURL)
-        }
+        itemViewModel.bind(withImageView: imageView)
+        imageView.backgroundColor = .gray
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
 

@@ -22,14 +22,16 @@ class ListTableViewCell: UITableViewCell {
         collectionViewFlowLayout.estimatedItemSize = CGSize(width: 1, height: 1)
         collectionViewFlowLayout.scrollDirection = .horizontal
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: collectionViewFlowLayout)
-
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        contentView.autoresizingMask = [.flexibleHeight]
+
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.register(ItemCollectionViewCell.self, forCellWithReuseIdentifier: itemCellIdentifier)
         contentView.addSubview(collectionView)
         collectionView.pinTo(view: contentView, onEdges: [.left, .right, .bottom, .top])
-        contentView.autoresizingMask = [.flexibleHeight]
+
+        collectionView.contentInset = UIEdgeInsets(top: 0, left: 8.0, bottom: 0.0, right: 0.0)
     }
     
     required init?(coder aDecoder: NSCoder) {
