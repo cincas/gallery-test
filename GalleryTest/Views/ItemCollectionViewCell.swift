@@ -28,7 +28,7 @@ class ItemCollectionViewCell: UICollectionViewCell {
         super.init(frame: frame)
 
         contentView.autoresizingMask = [.flexibleHeight]
-        contentView.backgroundColor = UIColor(red: 26.0 / 255.0, green: 26.0 / 255.0, blue: 26.0 / 255.0, alpha: 1.0)
+        contentView.backgroundColor = .blackLighter
 
         containerView.addSubview(titleLabel)
         containerView.addSubview(thumbnailView)
@@ -43,6 +43,7 @@ class ItemCollectionViewCell: UICollectionViewCell {
         titleLabel.numberOfLines = 0
         titleLabel.lineBreakMode = .byWordWrapping
         titleLabel.textColor = .white
+        titleLabel.adjustsFontSizeToFitWidth = true
         containerView.addConstraints([
             titleLabel.leftAnchor.constraint(equalTo: containerView.layoutMarginsGuide.leftAnchor, constant: 0),
             titleLabel.rightAnchor.constraint(equalTo: containerView.layoutMarginsGuide.rightAnchor, constant: 0)

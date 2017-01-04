@@ -24,7 +24,7 @@ class GalleryViewModel {
     private let taskGroup = DispatchGroup()
 
     /// Since fetching random response on the fly causes a problem with collection cell reuse,
-    /// here I preload image URL
+    /// here I preload image URL :(
     func prepareContent(completionHandler: @escaping (() -> Void)) {
         sectionViewModels.forEach { sectionViewModel in
             sectionViewModel.itemViewModels.forEach {

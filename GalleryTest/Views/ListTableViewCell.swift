@@ -52,14 +52,18 @@ extension ListTableViewCell: UICollectionViewDelegateFlowLayout {
     private var itemsPerScreen: CGFloat {
         guard let sectionType = sectionViewModel?.type else { return 1 }
 
-        switch (sectionType, UIDevice.current.orientation.isLandscape) {
-        case (.normal, false):
-            return 4.5
-        case (.normal, true):
-            return 5.5
-        case (.large, false):
+        switch (sectionType, UIDevice.current.orientation.isLandscape, UIDevice.current.userInterfaceIdiom) {
+        case (.normal, _, .phone):
+            return 3.5
+        case (.large, _, .phone):
             return 2.5
-        case (.large, true):
+        case (.normal, false, _):
+            return 4.5
+        case (.normal, true, _):
+            return 5.5
+        case (.large, false, _):
+            return 2.5
+        case (.large, true, _):
             return 3.5
         }
     }

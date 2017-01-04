@@ -17,7 +17,7 @@ class ListViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "List"
-        tableView.backgroundColor = .black
+        tableView.backgroundColor = .blackLight
         tableView.separatorStyle = .none
         tableView.separatorInset = UIEdgeInsets(top: 0.0, left: 8.0, bottom: 0.0, right: 0.0)
         tableView.register(ListTableViewCell.self, forCellReuseIdentifier: cellIdentifier)
@@ -81,7 +81,7 @@ extension ListViewController {
         let section = viewModel.sectionViewModels[indexPath.section]
         switch (section.type, UIDevice.current.userInterfaceIdiom) {
         case (.normal, .phone):
-            return 100
+            return 130
         case (.normal, _):
             return 150
         case (.large, .phone):
@@ -109,18 +109,10 @@ extension ListViewController: ItemCollectionViewCellDelegate {
     func present(_ cell: ItemCollectionViewCell) {
         let detailViewController = ItemDetailViewController(itemViewModel: cell.itemViewModel!)
         let startFrame = cell.thumbnailView.convert(cell.thumbnailView.frame, to: UIScreen.main.coordinateSpace)
+        let fadeTransitionDelegate = NavigationTransitionDelegate(sourceView: cell.thumbnailView, destination: detailViewController, startFrame: startFrame)
 
-        if UIDevice.current.userInterfaceIdiom == .pad {
-            let fadeTransitionDelegate = NavigationTransitionDelegate(sourceView: cell.thumbnailView, destination: detailViewController, startFrame: startFrame)
-
-            navigationController?.delegate = fadeTransitionDelegate
-            navigationController?.pushViewController(detailViewController, animated: true)
-        } else {
-            let fadeTransitionDelegate = NavigationTransitionDelegate(sourceView: cell.thumbnailView, destination: detailViewController, startFrame: startFrame)
-            detailViewController.transitioningDelegate = fadeTransitionDelegate
-            detailViewController.modalPresentationStyle = .custom
-            present(detailViewController, animated: true, completion: nil)
-        }
+        navigationController?.delegate = fadeTransitionDelegate
+        navigationController?.pushViewController(detailViewController, animated: true)
     }
 }
 

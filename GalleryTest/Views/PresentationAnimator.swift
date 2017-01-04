@@ -29,6 +29,7 @@ class PresentationAnimator: NSObject, UIViewControllerAnimatedTransitioning {
         let containerView = transitionContext.containerView
         containerView.backgroundColor = .clear
         containerView.insertSubview(toView, belowSubview: fromView)
+        // FIXME: In iPhone simulator, snapshotView returns a blank view
         let snapshotView = sourceView.snapshotView(afterScreenUpdates: true)!
         containerView.addSubview(snapshotView)
 
