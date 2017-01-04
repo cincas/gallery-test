@@ -20,14 +20,28 @@ class ListViewController: UITableViewController {
         tableView.separatorInset = UIEdgeInsets(top: 0.0, left: 8.0, bottom: 0.0, right: 0.0)
         tableView.register(ListTableViewCell.self, forCellReuseIdentifier: cellIdentifier)
         edgesForExtendedLayout = [.top]
-
-        viewModel.prepareContent {
-            self.tableView.reloadData()
-        }
+        refreshControl = UIRefreshControl()
+        refreshControl?.tintColor = .white
+        refreshControl?.attributedTitle = NSAttributedString(string: "Loading content...", attributes: [
+            NSForegroundColorAttributeName: UIColor.white,
+            NSFontAttributeName: UIFont.systemFont(ofSize: 18)
+            ])
+        refreshControl?.addTarget(self, action: #selector(refreshContent), for: .valueChanged)
+        refreshControl?.forceRefresh()
+        refreshContent()
     }
 
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
         tableView.reloadData()
+    }
+
+    @objc private func refreshContent() {
+        viewModel.prepareContent {
+            DispatchQueue.main.async {
+                self.refreshControl?.endRefreshing()
+                self.tableView.reloadData()
+            }
+        }
     }
 }
 
@@ -56,7 +70,8 @@ extension ListViewController {
         guard let itemCell = cell as? ListTableViewCell else { return }
 
         itemCell.collectionView.collectionViewLayout.invalidateLayout()
-        itemCell.collectionView.setContentOffset(.zero, animated: false)
+        let contentOffset = CGPoint(x: -itemCell.collectionView.contentInset.left, y: 0)
+        itemCell.collectionView.setContentOffset(contentOffset, animated: false)
     }
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

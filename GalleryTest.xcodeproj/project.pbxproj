@@ -25,6 +25,7 @@
 		1E1ECCCC1E1A25B3002C086C /* UIImageView+ImageDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E1ECCCB1E1A25B3002C086C /* UIImageView+ImageDownloader.swift */; };
 		1E1ECCD01E1A2C7B002C086C /* PresentationAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E1ECCCF1E1A2C7B002C086C /* PresentationAnimator.swift */; };
 		1E1ECCD21E1A3196002C086C /* ItemDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E1ECCD11E1A3196002C086C /* ItemDetailViewController.swift */; };
+		1EF3141E1E1CE07000302082 /* UIRefreshControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF3141D1E1CE07000302082 /* UIRefreshControl.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -60,6 +61,7 @@
 		1E1ECCCB1E1A25B3002C086C /* UIImageView+ImageDownloader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImageView+ImageDownloader.swift"; sourceTree = "<group>"; };
 		1E1ECCCF1E1A2C7B002C086C /* PresentationAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PresentationAnimator.swift; sourceTree = "<group>"; };
 		1E1ECCD11E1A3196002C086C /* ItemDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemDetailViewController.swift; sourceTree = "<group>"; };
+		1EF3141D1E1CE07000302082 /* UIRefreshControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIRefreshControl.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -167,6 +169,7 @@
 			children = (
 				1E1ECCBB1E1A2562002C086C /* UIView+AutoLayout.swift */,
 				1E1ECCCB1E1A25B3002C086C /* UIImageView+ImageDownloader.swift */,
+				1EF3141D1E1CE07000302082 /* UIRefreshControl.swift */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -299,6 +302,7 @@
 				1E1ECCC51E1A2562002C086C /* UIView+AutoLayout.swift in Sources */,
 				1E1ECCC31E1A2562002C086C /* ListTableViewCell.swift in Sources */,
 				1E1ECCC41E1A2562002C086C /* TYLabel.swift in Sources */,
+				1EF3141E1E1CE07000302082 /* UIRefreshControl.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

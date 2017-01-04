@@ -29,6 +29,8 @@ class GalleryViewModel {
 
     private let taskGroup = DispatchGroup()
 
+    /// Since fetching random response on the fly causes a problem with collection cell reuse,
+    /// here I preload image URL
     func prepareContent(completionHandler: @escaping (() -> Void)) {
         sectionViewModels.forEach { sectionViewModel in
             sectionViewModel.itemViewModels.forEach {
@@ -67,17 +69,13 @@ class ItemViewModel {
     var imageURL: URL?
     var title: String
     let id: String
-    let backgroundColor: UIColor
+    let backgroundColor = UIColor.gray
 
     init(item: Item) {
         self.item = item
         title = item.title
         id = item.id
         imageURL = item.imageURL
-        let red: CGFloat = CGFloat((Float(arc4random_uniform(255)) / 255.0))
-        let green: CGFloat = CGFloat((Float(arc4random_uniform(255)) / 255.0))
-        let yellow: CGFloat = CGFloat((Float(arc4random_uniform(255)) / 255.0))
-        backgroundColor = UIColor(red: red, green: green, blue: yellow, alpha: 1.0)
     }
 
     fileprivate func prepareImageURL(completionHandler: @escaping (() -> Void)) {

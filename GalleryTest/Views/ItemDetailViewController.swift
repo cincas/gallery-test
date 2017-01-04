@@ -26,7 +26,7 @@ class ItemDetailViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = itemViewModel.id
+        title = itemViewModel.title
         view.backgroundColor = .black
         extendedLayoutIncludesOpaqueBars = true
         edgesForExtendedLayout = [.top]
