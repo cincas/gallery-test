@@ -10,8 +10,16 @@ import UIKit
 
 private let cellIdentifier = "cell"
 class ListViewController: UITableViewController {
-    fileprivate var viewModel = GalleryViewModel(dataSource: DataSource.shared)
+    fileprivate let viewModel: GalleryViewModel
+    init(viewModel: GalleryViewModel) {
+        self.viewModel = viewModel
+        super.init(style: .plain)
+    }
     
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "List"

@@ -22,7 +22,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             NSFontAttributeName: UIFont.boldSystemFont(ofSize: 24.0)
         ]
 
-        let viewController = ListViewController()
+        let galleryViewModel = GalleryViewModel(dataSource: dummyDataSource)
+        let viewController = ListViewController(viewModel: galleryViewModel)
         let navigationController = UINavigationController(rootViewController: viewController)
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.rootViewController = navigationController
@@ -30,4 +31,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         return true
     }
+
+    private let dummyDataSource: DataSource = {
+        let sectionTitles = ["Channels", "Continue", "My List", "More like The OA ", "New Release", "Tomorrow"]
+        let sections = sectionTitles.flatMap { title -> Section? in
+            let numberOfItems = title.characters.count
+            var items = [Item]()
+            for itemIndex in 0..<numberOfItems {
+                let item = Item(id: "\(title)-\(itemIndex)", title: "\(title)-\(itemIndex)", imageURL: nil)
+                items.append(item)
+            }
+            let sectionType: Section.SectionType = numberOfItems % 2 == 0 ? .normal : .large
+            return Section(title: title, type: sectionType, items: items)
+        }
+
+        return DataSource(sections: sections)
+    }()
 }

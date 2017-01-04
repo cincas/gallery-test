@@ -26,25 +26,8 @@ struct Section {
 }
 
 struct DataSource {
-    static let shared = DataSource(sections: generatedSections())
     let sections: [Section]
     init(sections: [Section]) {
         self.sections = sections
     }
-}
-
-fileprivate func generatedSections() -> [Section] {
-    let sectionTitles = ["Channels", "Continue", "My List", "More like The OA ", "New Release", "Tomorrow"]
-    let sections = sectionTitles.flatMap { title -> Section? in
-        let numberOfItems = title.characters.count
-        var items = [Item]()
-        for itemIndex in 0..<numberOfItems {
-            let item = Item(id: "\(title)-\(itemIndex)", title: "\(title)-\(itemIndex)", imageURL: nil)
-            items.append(item)
-        }
-        let sectionType: Section.SectionType = numberOfItems % 2 == 0 ? .normal : .large
-        return Section(title: title, type: sectionType, items: items)
-    }
-
-    return sections
 }
