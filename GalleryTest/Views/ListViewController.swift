@@ -48,6 +48,7 @@ extension ListViewController {
         guard let itemCell = cell as? ListTableViewCell else { return }
         itemCell.collectionView.reloadData()
         itemCell.collectionView.collectionViewLayout.invalidateLayout()
+        itemCell.collectionView.setContentOffset(.zero, animated: false)
     }
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

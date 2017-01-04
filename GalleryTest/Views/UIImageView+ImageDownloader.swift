@@ -14,6 +14,7 @@ extension UIImageView {
             guard let sself = self else { return }
             switch result {
             case let .success(image, imageURL) where imageURL == url:
+                // FIXME: async loading images sometime still cause incorrect image
                 DispatchQueue.main.async {
                     sself.image = image
                 }

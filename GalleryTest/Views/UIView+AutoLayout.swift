@@ -20,6 +20,7 @@ extension UIView {
     }
 
     func pin(edge: NSLayoutAttribute, toView view: UIView, withOffset offset: CGFloat = 0, onEdge: NSLayoutAttribute? = nil) {
+        translatesAutoresizingMaskIntoConstraints = false
         let toEdge: NSLayoutAttribute = (onEdge != nil) ? onEdge! : edge
         let constraint = NSLayoutConstraint(item: self, attribute: edge, relatedBy: .equal, toItem: view, attribute: toEdge, multiplier: 1, constant: offset)
         commonSuperView(withView: view)?.addConstraint(constraint)

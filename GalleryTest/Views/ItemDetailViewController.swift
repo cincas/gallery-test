@@ -17,18 +17,7 @@ class ItemDetailViewController: UIViewController {
 
     init(itemViewModel: ItemViewModel) {
         self.itemViewModel = itemViewModel
-        if let imageURL = itemViewModel.imageURL {
-            imageView.setImage(fromURL: imageURL)
-        }
-        imageView.contentMode = .scaleAspectFill
-        imageView.clipsToBounds = true
-
-        titleLabel.numberOfLines = 0
-        titleLabel.textAlignment = .center
-        titleLabel.textColor = .white
         super.init(nibName: nil, bundle: nil)
-        title = itemViewModel.id
-        titleLabel.text = itemViewModel.title
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -37,7 +26,10 @@ class ItemDetailViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        title = itemViewModel.id
         view.backgroundColor = .black
+        extendedLayoutIncludesOpaqueBars = true
+        edgesForExtendedLayout = [.top]
 
         dismissButton.setTitle("Dismiss", for: .normal)
         dismissButton.setTitleColor(.white, for: .normal)
@@ -45,6 +37,12 @@ class ItemDetailViewController: UIViewController {
 
         view.addSubview(dismissButton)
         dismissButton.pinTo(view: view, onEdges: [.centerX, .bottom])
+
+        if let imageURL = itemViewModel.imageURL {
+            imageView.setImage(fromURL: imageURL)
+        }
+        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
 
         view.addSubview(imageView)
         imageView.pinTo(view: view, onEdges: [.left, .right])
@@ -57,14 +55,18 @@ class ItemDetailViewController: UIViewController {
             imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor, multiplier: 9.0 / 16.0)
         )
 
+        titleLabel.text = itemViewModel.title
+        titleLabel.numberOfLines = 0
+        titleLabel.textAlignment = .center
+        titleLabel.textColor = .white
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+
         view.addSubview(titleLabel)
         view.addConstraints([
             titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             titleLabel.widthAnchor.constraint(lessThanOrEqualTo: view.widthAnchor),
             titleLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 20)
             ])
-
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
     }
 
     func close() {
