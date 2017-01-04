@@ -1,10 +1,4 @@
-//
-//  Transitionable.swift
-//  GalleryTest
-//
-//  Created by Yang, Tyler on 3/1/17.
 //  Copyright © 2017 cincas. All rights reserved.
-//
 
 import UIKit
 
