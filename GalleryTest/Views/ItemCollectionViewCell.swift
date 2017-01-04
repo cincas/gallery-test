@@ -25,7 +25,9 @@ class ItemCollectionViewCell: UICollectionViewCell {
 
     let titleLabel = TYLabel()
     let thumbnailView = UIImageView()
-    let containerView = UIView()
+    fileprivate let containerView = UIView()
+    fileprivate var thumbnailRatioConstraint: NSLayoutConstraint?
+
     override init(frame: CGRect) {
         super.init(frame: frame)
 
@@ -63,8 +65,11 @@ class ItemCollectionViewCell: UICollectionViewCell {
 
     override func updateConstraints() {
         super.updateConstraints()
-        let thumbnailRatioConstraint = thumbnailView.heightAnchor.constraint(equalTo: thumbnailView.widthAnchor, multiplier: 9.0 / 16.0)
+        if thumbnailRatioConstraint == nil {
+            let ratioConstraint = thumbnailView.heightAnchor.constraint(equalTo: thumbnailView.widthAnchor, multiplier: 9.0 / 16.0)
 
-        thumbnailView.addConstraint(thumbnailRatioConstraint)
+            thumbnailView.addConstraint(ratioConstraint)
+            thumbnailRatioConstraint = ratioConstraint
+        }
     }
 }

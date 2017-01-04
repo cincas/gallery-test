@@ -29,8 +29,6 @@ class ListTableViewCell: UITableViewCell {
         collectionView.register(ItemCollectionViewCell.self, forCellWithReuseIdentifier: itemCellIdentifier)
         contentView.addSubview(collectionView)
         collectionView.pinTo(view: contentView, onEdges: [.left, .right, .bottom, .top])
-        collectionView.layer.borderColor = UIColor.red.cgColor
-        collectionView.layer.borderWidth = 1.0
         contentView.autoresizingMask = [.flexibleHeight]
     }
     
