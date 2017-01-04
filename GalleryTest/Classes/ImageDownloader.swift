@@ -23,19 +23,20 @@ typealias ImageDownloadCompletionHandler = (Result<UIImage, NetworkError>) -> Vo
 
 class ImageDownloader {
     static let shared = ImageDownloader(cachePool: ImageCachePool())
-    fileprivate let cachePool: ImageCacheLike
-    fileprivate var tasks = [ImageDownloadTask]()
+    private let cachePool: ImageCacheLike
+    private var tasks = [ImageDownloadTask]()
 
     init(cachePool: ImageCacheLike) {
         self.cachePool = cachePool
     }
 
-    func downloadImage(from url: URL, completionHandler: @escaping ImageDownloadCompletionHandler) {
-        let downloadTask = ImageDownloadTask(url: url)
+    @discardableResult
+    func downloadImage(from url: URL, completionHandler: @escaping ImageDownloadCompletionHandler) -> ImageDownloadTask {
+        var downloadTask = ImageDownloadTask(url: url)
         let cachedImage = cachePool.loadImage(withCacheKey: downloadTask.cacheKey)
         guard cachedImage == nil else {
             completionHandler(.success(cachedImage!))
-            return
+            return downloadTask
         }
 
         tasks.append(downloadTask)
@@ -57,6 +58,31 @@ class ImageDownloader {
 
             completionHandler(result)
         }
+
+        return downloadTask
+    }
+
+    private var taskList = [UIImageView: ImageDownloadTask]()
+    func downloadImage(for imageView: UIImageView, from url: URL) {
+        if var existingTask = taskList[imageView] {
+            existingTask.cancel()
+            taskList.removeValue(forKey: imageView)
+        }
+
+        let downloadTask = downloadImage(from: url) { [weak imageView] result in
+            guard let imageView = imageView else { return }
+            switch result {
+            case let .success(image):
+                DispatchQueue.main.async {
+                    imageView.image = image
+                }
+            case .failure(_):
+                break
+            }
+            self.taskList.removeValue(forKey: imageView)
+        }
+
+        taskList[imageView] = downloadTask
     }
 }
 
@@ -69,8 +95,10 @@ struct ImageDownloadTask {
         cacheKey = url.absoluteString
     }
 
-    func start(completionHandler: ImageDownloadCompletionHandler? = nil) {
-        URLSession.shared.dataTask(with: url) { data, response, error in
+    fileprivate var dataTask: URLSessionDataTask?
+
+    mutating func start(completionHandler: ImageDownloadCompletionHandler? = nil) {
+        dataTask = URLSession.shared.dataTask(with: url) { data, response, error in
             guard error == nil else {
                 completionHandler?(.failure(.network))
                 return
@@ -80,6 +108,12 @@ struct ImageDownloadTask {
             } else {
                 completionHandler?(.failure(.malformed))
             }
-        }.resume()
+        }
+        dataTask?.resume()
+    }
+
+    mutating func cancel() {
+        dataTask?.cancel()
+        dataTask = nil
     }
 }

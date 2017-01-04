@@ -97,15 +97,6 @@ class ItemViewModel {
             }
 
             completionHandler()
-
-        }
-    }
-
-    func bind(withImageView imageView: UIImageView) {
-        imageView.image = nil
-        guard imageURL == nil else {
-            imageView.setImage(fromURL: imageURL!)
-            return
         }
     }
 }

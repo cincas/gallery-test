@@ -18,7 +18,11 @@ class ItemCollectionViewCell: UICollectionViewCell {
             titleLabel.text = itemViewModel.title
 
             thumbnailView.backgroundColor = itemViewModel.backgroundColor
-            itemViewModel.bind(withImageView: thumbnailView)
+            thumbnailView.image = nil
+            
+            if let imageURL = itemViewModel.imageURL {
+                thumbnailView.setImage(fromURL: imageURL)
+            }
         }
     }
 
