@@ -19,7 +19,7 @@ enum NetworkError: Error {
     case malformed
 }
 
-typealias ImageDownloadCompletionHandler = (Result<(UIImage, URL), NetworkError>) -> Void
+typealias ImageDownloadCompletionHandler = (Result<UIImage, NetworkError>) -> Void
 
 class ImageDownloader {
     static let shared = ImageDownloader(cachePool: ImageCachePool())
@@ -34,7 +34,7 @@ class ImageDownloader {
         let downloadTask = ImageDownloadTask(url: url)
         let cachedImage = cachePool.loadImage(withCacheKey: downloadTask.cacheKey)
         guard cachedImage == nil else {
-            completionHandler(.success(cachedImage!, url))
+            completionHandler(.success(cachedImage!))
             return
         }
 
@@ -42,7 +42,7 @@ class ImageDownloader {
         downloadTask.start { [weak self] result in
             guard let sself = self else { return }
             switch result {
-            case let .success(image, _):
+            case let .success(image):
                 sself.cachePool.cacheImage(image, cacheKey: downloadTask.cacheKey)
                 // FIXME: one potential problem of this is multiple requests to same uncached image
                 if let index = sself.tasks.index(where: {
@@ -76,7 +76,7 @@ struct ImageDownloadTask {
                 return
             }
             if let data = data, let image = UIImage(data: data) {
-                completionHandler?(.success(image, self.url))
+                completionHandler?(.success(image))
             } else {
                 completionHandler?(.failure(.malformed))
             }

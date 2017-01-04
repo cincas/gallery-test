@@ -20,6 +20,10 @@ class ListViewController: UITableViewController {
         tableView.separatorInset = UIEdgeInsets(top: 0.0, left: 8.0, bottom: 0.0, right: 0.0)
         tableView.register(ListTableViewCell.self, forCellReuseIdentifier: cellIdentifier)
         edgesForExtendedLayout = [.top]
+
+        viewModel.prepareContent {
+            self.tableView.reloadData()
+        }
     }
 
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -29,7 +33,7 @@ class ListViewController: UITableViewController {
 
 extension ListViewController {
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return viewModel.sectionViewModels.count
+        return viewModel.numberOfSections
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -43,13 +47,14 @@ extension ListViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> ListTableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! ListTableViewCell
         cell.sectionViewModel = viewModel.sectionViewModels[indexPath.section]
+        cell.collectionView.reloadData()
         cell.collectionViewCellDelegate = self
         return cell
     }
 
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         guard let itemCell = cell as? ListTableViewCell else { return }
-        itemCell.collectionView.reloadData()
+
         itemCell.collectionView.collectionViewLayout.invalidateLayout()
         itemCell.collectionView.setContentOffset(.zero, animated: false)
     }

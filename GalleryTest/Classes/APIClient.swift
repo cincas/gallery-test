@@ -9,11 +9,11 @@
 import Foundation
 
 protocol ColorLoversClientType {
-    func extractImageURL(fromURL url: URL, completionHandler: @escaping ((Result<URL, Error>) -> Void))
+    func loadItem(from url: URL, completionHandler: @escaping ((Result<[String: Any], Error>) -> Void))
 }
 
 extension ColorLoversClientType {
-    func extractImageURL(fromURL url: URL, completionHandler: @escaping ((Result<URL, Error>) -> Void)) {
+    func loadItem(from url: URL, completionHandler: @escaping ((Result<[String: Any], Error>) -> Void)) {
         URLSession.shared.dataTask(with: url) { data, response, error in
             guard error == nil else {
                 completionHandler(.failure(error!))
@@ -22,14 +22,12 @@ extension ColorLoversClientType {
 
             guard let data = data,
                 let jsonObject = try? JSONSerialization.jsonObject(with: data, options: []) as? [[String: Any]],
-                let object = jsonObject?.first,
-                let imageURLString = object["imageUrl"] as? String,
-                let imageURL = URL(string: imageURLString) else {
+                let object = jsonObject?.first else {
                     completionHandler(.failure(NetworkError.malformed))
                     return
             }
 
-            completionHandler(.success(imageURL))
-        }.resume()
+            completionHandler(.success(object))
+            }.resume()
     }
 }

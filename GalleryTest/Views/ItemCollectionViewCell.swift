@@ -17,8 +17,7 @@ class ItemCollectionViewCell: UICollectionViewCell {
             }
             titleLabel.text = itemViewModel.title
 
-            thumbnailView.image = nil
-
+            thumbnailView.backgroundColor = itemViewModel.backgroundColor
             itemViewModel.bind(withImageView: thumbnailView)
         }
     }

@@ -13,13 +13,12 @@ extension UIImageView {
         ImageDownloader.shared.downloadImage(from: url) { [weak self] result in
             guard let sself = self else { return }
             switch result {
-            case let .success(image, imageURL) where imageURL == url:
+            case let .success(image):
                 // FIXME: async loading images sometime still cause incorrect image
                 DispatchQueue.main.async {
                     sself.image = image
                 }
-            case .failure(_), .success(_):
-                sself.image = nil
+            case .failure(_):
                 debugPrint("failed to download image")
             }
         }
